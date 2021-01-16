@@ -1,0 +1,88 @@
+// Code: BST to Sorted LL
+// Send Feedback
+// Given a BST, convert it into a sorted linked list. Return the head of LL.
+// Input format :
+// Elements in level order form (separated by space)
+// (If any node does not have left or right child, take -1 in its place)
+// Output Format :
+// Linked list elements (separated by space)
+// Sample Input :
+// 8 5 10 2 6 -1 -1 -1 -1 -1 7 -1 -1
+// Sample Output :
+// 2 5 6 7 8 10
+
+public class Solution {
+
+/*	Binary Tree Node class 
+ * 
+ * 	class BinaryTreeNode<T> {
+		T data;
+		BinaryTreeNode<T> left;
+		BinaryTreeNode<T> right;
+		
+		public BinaryTreeNode(T data) {
+			this.data = data;
+		}
+	}
+	*/
+
+/* LinkedList Node Class
+*
+*	
+class LinkedListNode<T> {
+	T data;
+	LinkedListNode<T> next;
+	
+	public LinkedListNode(T data) {
+		this.data = data;
+	}
+}
+*/
+
+	public static LinkedListNode<Integer> BSTToSortedLL(BinaryTreeNode<Integer> root){
+		/* Your class should be named Solution
+		 * Don't write main().
+		 * Don't read input, it is passed as function argument.
+		 * Return output and don't print it.
+	 	 * Taking input and printing output is handled automatically.
+		*/
+		 LinkedListNode<Integer> head=new LinkedListNode<Integer>(root.data);
+        
+        if(root.left==null&&root.right==null)
+        {
+            return head;
+        }
+        
+        else if(root.left!=null&&root.right!=null)
+        {
+            LinkedListNode<Integer> temp=BSTToSortedLL(root.left);
+            LinkedListNode<Integer> tempp=temp;
+            while(temp.next!=null)
+            {
+                temp=temp.next;
+            }
+            temp.next=head;
+            head.next=BSTToSortedLL(root.right);
+            return tempp;
+        }
+        
+        else if(root.left!=null)
+        {
+            LinkedListNode<Integer> temp=BSTToSortedLL(root.left);
+            LinkedListNode<Integer> tempp=temp;
+            while(temp.next!=null)
+            {
+                temp=temp.next;
+            }
+            temp.next=head;
+            return tempp;
+        }
+        else
+        {
+            head.next=BSTToSortedLL(root.right);
+            return head;
+        }
+        
+        
+	}
+}	

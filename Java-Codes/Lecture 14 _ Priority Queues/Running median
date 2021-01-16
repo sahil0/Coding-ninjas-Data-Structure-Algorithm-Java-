@@ -1,0 +1,94 @@
+// Running median
+// Send Feedback
+// You are given a stream of n integers. For every ith integer, add it to the running list of integers and print the resulting median (of the list till now).
+// Print the only integer part of median.
+// Input Format :
+// Line 1 : An integer N denoting the number of integers in the stream
+// Line 2 : N integers which are separated by spaces
+// Output Format :
+// After each new integer is added to the list print the updated median on a new line
+// Input Constraints
+// 1 <= n <= 10^5
+// 1 <= Ai <= 10^5
+// Sample Input 1 :
+// 6
+// 6 2 1 3 7 5
+// Sample Output 1 :
+// 6
+// 4
+// 2
+// 2
+// 3
+// 4
+// Sample Output explanation :
+// S = {6}, median = 6
+// S = {6, 2} -> {2, 6}, median = 4
+// S = {6, 2, 1} -> {1, 2, 6}, median = 2
+// S = {6, 2, 1, 3} -> {1, 2, 3, 6}, median = 2
+// S = {6, 2, 1, 3, 7} -> {1, 2, 3, 6, 7}, median = 3
+// S = {6, 2, 1, 3, 7, 5} -> {1, 2, 3, 5, 6, 7}, median = 4
+
+
+import java.util.*;
+public class Solution {
+
+	public static void runningMedian(int arr[]) {
+		PriorityQueue<Integer> maxpq=new PriorityQueue<>(Collections.reverseOrder());
+ 		PriorityQueue<Integer> minpq=new PriorityQueue<>();
+        int i=0;
+        while(i<arr.length){
+            // the below if condition is for the first element to enter in the max priority queue
+            
+            if(maxpq.size()==0&&minpq.size()==0){
+                maxpq.add(arr[i]);
+                System.out.println(arr[i]);
+            }
+            // the below condition is for second element to enter to the min priority queue
+            
+            else if(maxpq.size()!=0&&minpq.size()==0){
+                maxpq.add(arr[i]);
+                minpq.add(maxpq.remove());
+                int max=maxpq.peek();
+                int min=minpq.peek();
+                System.out.println((max+min)/2);
+            }
+            // when both have elements
+            else if(maxpq.size()!=0&&minpq.size()!=0){
+                int num=arr[i];
+                int max=maxpq.peek();
+                int min=minpq.peek();
+                if(num<max){
+                maxpq.add(arr[i]);           
+                }else{
+                    minpq.add(arr[i]);
+                } max=maxpq.peek();
+                 min=minpq.peek();
+                // if the size is same
+                if(maxpq.size()==minpq.size()){
+                    System.out.println((maxpq.peek()+minpq.peek())/2);
+                }
+                // if the size is differ more than one than 
+                // first try to make there size equal 
+                else if(maxpq.size()-minpq.size()>1){
+                    minpq.add(maxpq.remove());
+                    max=maxpq.peek();
+                    min=minpq.peek();
+                    System.out.println((max+min)/2);
+                }//same
+                else if(minpq.size()-maxpq.size()>1){
+                     maxpq.add(minpq.remove());
+                     max=maxpq.peek();
+                     min=minpq.peek();
+                     System.out.println((max+min)/2);
+                }   // if difference is less than two mwans one    
+                else if(minpq.size()>maxpq.size()){
+                     System.out.println(minpq.peek());
+                }
+                else if(minpq.size()<maxpq.size()){
+                     System.out.println(maxpq.peek());
+                }
+            }
+        i++;
+        }
+    }
+}

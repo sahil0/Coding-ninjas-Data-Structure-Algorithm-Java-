@@ -1,0 +1,104 @@
+// Check cousins
+// Send Feedback
+// Given the binary Tree and two nodes say ‘p’ and ‘q’. Determine whether the two nodes are cousins of each other or not. Two nodes are said to be cousins of each other if they are at same level of the Binary Tree and have different parents.
+// Do it in O(n).
+// Input format :
+// Line 1 : Nodes in level order form (separated by space). If any node does not have left or right child, take -1 in its place
+// Line 2 : integer value of p 
+// Line 3 : Integer value of q
+// Output format :
+// true or false
+// Constraints :
+// 1 <= N <= 10^5
+// Sample Input :
+// 5 6 10 2 3 4 -1 -1 -1 -1 9 -1 -1 -1 -1
+// 2
+// 4
+// Sample Output :
+// true
+
+
+
+import java.util.ArrayList;
+
+
+public class solution {
+
+	/*	Binary Tree Node class
+	 * 
+	 * class BinaryTreeNode<T> {
+		T data;
+		BinaryTreeNode<T> left;
+		BinaryTreeNode<T> right;
+
+		public BinaryTreeNode(T data) {
+			this.data = data;
+		}
+	}
+	 */
+
+	public static boolean isCousin(BinaryTreeNode<Integer> root, int p, int q) {
+		
+        int depth1 = depth(root,p);
+        int depth2 = depth(root,q);
+        
+        if(depth1 == 0 || depth2 == 0){
+            return false;
+        }
+        
+        if(depth1 == depth2){
+            return !siblings(root,p,q);
+        }else{
+            return false;
+        }
+        
+	}
+    
+    private static boolean siblings(BinaryTreeNode<Integer> root ,int p,int q){
+        if(root == null){
+            return false;
+        }
+        
+        if(root.left != null && root.right != null){
+            if(root.right.data == p && root.left.data == q){
+                return true;
+            }else if(root.right.data == q && root.left.data == p){
+                return true;
+            }else{
+                return siblings(root.left,p,q) || siblings(root.right,p,q);
+            }
+        }
+        
+        if(root.left != null){
+           return siblings(root.left,p,q);
+        }
+        else{
+             return siblings(root.right,p,q);
+        }
+ 
+    }
+    
+    private static int depth(BinaryTreeNode<Integer> root ,int p){
+        if(root == null){
+            return 0;
+        }
+        
+        if(root.data == p){
+            return 1;
+        }
+        
+        int left = depth(root.left,p);
+        if(left != 0){
+            return left+1;
+        }
+        int right = depth(root.right,p);
+        
+        if(right != 0){
+            return right+1;
+        }else{
+            return 0;
+        }
+        
+    }
+    
+}

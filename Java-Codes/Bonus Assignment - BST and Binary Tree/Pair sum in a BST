@@ -1,0 +1,95 @@
+// Pair sum in a BST
+// Send Feedback
+// Given a binary search tree and an integer S, find pair of nodes in the BST which sum to S. You can use extra space only O(log n).
+// Assume BST contains all unique elements.
+// Note: In a pair, print the smaller element first.
+// Input format:
+
+// Line 1: Elements in the level order form (separated by space)
+
+// (If any node does not have left or right child, take -1 in its place)
+
+// Line 2: S
+
+// Output format: Each pair in a different line (pair elements separated by space)
+
+// Sample Input :
+// 8 5 10 2 6 -1 -1 -1 -1 -1 7 -1 -1
+// 12
+// Sample Output
+// 2 10
+// 5 7
+
+import java.util.*;
+public class Solution {
+
+/*	Binary Tree Node class
+ * 
+ * class BinaryTreeNode<T> {
+		T data;
+		BinaryTreeNode<T> left;
+		BinaryTreeNode<T> right;
+		
+		public BinaryTreeNode(T data) {
+			this.data = data;
+		}
+	}
+	*/
+	 public static void pairSum(ArrayList<Integer> arr, int num) 
+     {
+        
+        int i = 0, j = arr.size() - 1; 
+        int count = 0;
+        
+        while (i != j && j > i && i < arr.size() - 1 && j > 0)  {
+            if ((arr.get(i) + arr.get(j)) > num )  {
+                j --;
+            }
+                  
+            else if ((arr.get(j) + arr.get(i)) < num)  { 
+                i ++;
+            }
+            
+            else {
+                System.out.println(arr.get(i) + " " + arr.get(j));
+                if(arr.get(j - 1) == arr.get(j) && i != j - 1){
+                    j --;
+                    count ++;
+                } 
+                else {
+                    if(arr.get(i) == arr.get(i + 1)) {
+                        j = j + count;
+                        count = 0;
+                    }
+                    else
+                        j --;
+                    i ++;
+                }
+            } 
+        }
+    }
+    
+    
+    public static ArrayList<Integer> convertArray(BinaryTreeNode<Integer> root) {
+        if(root == null) {
+            ArrayList<Integer> arr = new ArrayList<Integer>();
+            return arr;
+        }
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        ArrayList<Integer> smallAnsLeft = convertArray(root.left);
+        ans.addAll(smallAnsLeft);
+        ans.add(root.data);
+        ArrayList<Integer> smallAnsRight = convertArray(root.right);
+        ans.addAll(smallAnsRight);
+        return ans;
+    }
+    
+
+	public static void printNodesSumToS(BinaryTreeNode<Integer> root, int s) {
+		// Write your code here
+
+       
+        ArrayList<Integer> arr = convertArray(root);
+        pairSum(arr, s);
+	}
+}

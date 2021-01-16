@@ -1,0 +1,61 @@
+// Replace with Sum of greater nodes
+// Send Feedback
+// Given a binary search tree, replace each nodes' data with the sum of all nodes' which are greater or equal than it. You need to include the current node's data also.
+// That is, if in given BST there is a node with data 5, you need to replace it with sum of its data (i.e. 5) and all nodes whose data is greater than or equal to 5.
+// You don't need to return or print, just change the data of each node.
+// Input format :
+
+// Line 1 : Elements in level order form (separated by space)
+
+// (If any node does not have left or right child, take -1 in its place)
+
+// Output format : Elements are printed in level order wise, every level in new line
+
+// Sample Input 1 :
+// 8 5 10 2 6 -1 -1 -1 -1 -1 7 -1 -1
+// Sample Output 1 :
+// 18 
+// 36 10 
+// 38 31 
+// 25 
+
+
+import java.util.ArrayList;
+public class Solution{
+	//Approach 1: time complexity O(n) we go in reverse inorder mannter ie right root left
+	public static void replaceWithLargerNodesSum(BinaryTreeNode<Integer> root) {
+		replaceWithLargerNodesSum(root,0);
+	}	
+	public static int replaceWithLargerNodesSum(BinaryTreeNode<Integer> root, int sum){
+		//Base Case
+		if(root == null)
+			return sum;
+		//Recursive Case
+		sum = replaceWithLargerNodesSum(root.right,sum);
+		sum += root.data;
+		root.data = sum;
+		return replaceWithLargerNodesSum(root.left,sum);
+	}
+	// //Approach 2 : Inorder approach Time Complexity : O(n) space Complexity O(n)
+	// public static void replaceWithLargerNodesSum_2(BinaryTreeNode<Integer>root){
+	// 	if(root == null)
+	// 		return;
+	// 	ArrayList<BinaryTreeNode<Integer>> list = new ArrayList<>();
+	// 	inorderList(root,list);
+	// 	BinaryTreeNode<Integer> next = list.get(list.size()-1);
+	// 	for(int i = list.size() - 2; i>=0; i--){
+	// 		BinaryTreeNode<Integer> current = list.get(i);
+	// 		current.data += next.data;
+	// 		next = current;
+	// 	}
+	// }
+	//Function to return the sorted list of the binaryTree
+	public static void inorderList(BinaryTreeNode<Integer> root, ArrayList< BinaryTreeNode<Integer> >list){
+		if(root == null)
+			return;
+		inorderList(root.left,list);
+		list.add(root);
+		inorderList(root.right,list);
+	}
+	
+}
